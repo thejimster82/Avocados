@@ -1,4 +1,3 @@
-install.packages("lubridate")
 library(dplyr)
 library(ggplot2)
 library(car)
@@ -34,5 +33,3 @@ vif(avos_mod3)
 avo.cali$Month = month(as.POSIXct(avo.cali$Date,format="%Y-%m-%d"))
 
 ggplot(avo.cali,aes(x=Month,y=Total.Volume,color=type)) + geom_point()
- 
-
