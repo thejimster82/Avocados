@@ -17,7 +17,7 @@ def convertDate(dateStr):
 
 
 # %%
-avocados = pd.read_csv("avocado_clean.csv")
+avocados = pd.read_csv(r'avocado_clean.csv')
 avocados['Date'] = avocados['Date'].apply(convertDate)
 
 # %%
@@ -74,18 +74,35 @@ plt.xlabel("month of the year")
 plt.legend(["organic","conventional"])
 
 plt.show()
+# %%
+# looking at total volume sold vs the avg price
+x1 = avocados['AveragePrice'][(avocados.type == "organic")]
+y1 = avocados['Total Volume'][(avocados.type == "organic")]
+plt.plot(x1, y1, "ro")
 
+x2 = avocados['AveragePrice'][(avocados.type == "conventional")]
+y2 = avocados['Total Volume'][(avocados.type == "conventional")]
+plt.plot(x2, y2, "bo")
+
+plt.plot(np.unique(x1), np.poly1d(np.polyfit(x1, y1, 1))(np.unique(x1)))
+plt.plot(np.unique(x2), np.poly1d(np.polyfit(x2, y2, 1))(np.unique(x2)))
+
+plt.ylabel("total volume sold")
+plt.xlabel("Average Price")
+plt.legend(["organic","conventional"])
+
+plt.show()
 # %%
 # looking at total volume sold in CA vs the avg price
-x1 = avocados['AveragePrice'][(avocados.region == "West") & (
+x1 = avocados['AveragePrice'][(avocados.region == "California") & (
     avocados.type == "organic")]
-y1 = avocados['Total Volume'][(avocados.region == "West") & (
+y1 = avocados['Total Volume'][(avocados.region == "California") & (
     avocados.type == "organic")]
 plt.plot(x1, y1, "ro")
 
-x2 = avocados['AveragePrice'][(avocados.region == "West") & (
+x2 = avocados['AveragePrice'][(avocados.region == "California") & (
     avocados.type == "conventional")]
-y2 = avocados['Total Volume'][(avocados.region == "West") & (
+y2 = avocados['Total Volume'][(avocados.region == "California") & (
     avocados.type == "conventional")]
 plt.plot(x2, y2, "bo")
 
@@ -99,7 +116,7 @@ plt.legend(["organic","conventional"])
 plt.show()
 
 # %%
-# looking at total volume sold in CA vs log of the avg price
+# looking at log of total volume sold in CA vs log of the avg price
 x1 = avocados['AveragePrice'][(avocados.region == "California") & (
     avocados.type == "organic")].transform('log')
 y1 = avocados['Total Volume'][(avocados.region == "California") & (
@@ -115,7 +132,7 @@ plt.plot(x2, y2, "bo")
 plt.plot(np.unique(x1), np.poly1d(np.polyfit(x1, y1, 1))(np.unique(x1)))
 plt.plot(np.unique(x2), np.poly1d(np.polyfit(x2, y2, 1))(np.unique(x2)))
 
-plt.ylabel("total volume sold in CA")
+plt.ylabel("ln(total volume sold in CA)")
 plt.xlabel("ln(Average Price)")
 plt.legend(["organic","conventional"])
 
