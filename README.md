@@ -7,7 +7,7 @@ Before beginning analysis, we had to clean up the data. Different rows reported 
 
 ## Data Analysis ##
 Before trying to answer for our final question, we wanted to see what simple metrics we could get out of the data. We first looked at the price of avocados across the year, comparing organic to conventional avocados.
-```{python}
+```python
 # looking at price across the year
 plt.plot(
     avocados.month[(avocados.type == "conventional")&(avocados.combined==0)]-.25, 
@@ -22,7 +22,7 @@ plt.plot(
 From this we were able to see that avocado prices followed a sinusoidal curve, with prices increasing in months 3-4 and 8-10. After doing a bit of research, we found that this was likely due to the 
 ___
 Next we set our sights on comparing total volume sold to average price. 
-```
+```python
 # looking at total volume sold vs the avg price
 x1 = avocados['AveragePrice'][(avocados.type == "organic")]
 y1 = avocados['Total Volume'][(avocados.type == "organic")]
@@ -40,7 +40,7 @@ Our intuition about the data made us consider applying a log-log transform to th
 
 ![image](./images/TVvsAP-LN.png)
 Going back to our original question, we sought to build a model using more than just these parameters. Our other inputs were categorical so we did not worry about transforming them before adding them to our regression model.
-```
+```python
 result, predictors = dmatrices(
     "np.log(Q('Total Volume')) ~ np.log(AveragePrice) + region + type + Date + np.log(AveragePrice):type + np.log(AveragePrice):region", avocados)
 avocMod3 = sm.OLS(result, predictors).fit()
